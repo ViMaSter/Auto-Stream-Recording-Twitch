@@ -6,7 +6,6 @@ Thanks for source script to [junian](https://gist.github.com/junian/b41dd8e544bf
 # Requirements
 
 - [Python 3](https://www.python.org/downloads/)
-- [Twitch Chat Downloader](https://github.com/PetterKraabol/Twitch-Chat-Downloader) (optional)
 - [Streamlink](https://github.com/streamlink/streamlink)
 - [FFmpeg](http://ffmpeg.org/download.html)
 
@@ -41,15 +40,17 @@ Thanks for source script to [junian](https://gist.github.com/junian/b41dd8e544bf
 - quality - single quality or separated by comma (ex. "720p,720p60,best")
 
 Example config file content:
+```json
 {
-"client_id": "h9wqpoxrb3cxaxmxas0ee4olvzuo0p",
-"client_secret": "8rc0xfpgerer0set41ffxzd9799cpa",
-"ffmpeg_path": "",
-"output_path": "twitch",
-"refresh": 5,
-"username": "forsen",
-"quality": "720p,720p60,best"
+   "client_id": "h9wqpoxrb3cxaxmxas0ee4olvzuo0p",
+   "client_secret": "8rc0xfpgerer0set41ffxzd9799cpa",
+   "ffmpeg_path": "",
+   "output_path": "twitch",
+   "refresh": 5,
+   "username": "forsen",
+   "quality": "720p,720p60,best"
 }
+```
 
 6. Do: `pip install -r requirements.txt`
 7. Do: `python Auto_Recording_Twitch.py`
