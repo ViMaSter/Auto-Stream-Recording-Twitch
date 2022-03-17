@@ -1,0 +1,9 @@
+{
+  "client_id": "",
+  "client_secret": "",
+  "ffmpeg_path": "",
+  "output_path": "twitch",
+  "refresh": 5,
+  "username": "",
+  "quality": "720p,720p60,best"
+}
