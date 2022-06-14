@@ -25,30 +25,30 @@ class TwitchRecorder:
 
         self.validate_config(config)
         
-        self.client_id          = config["client_id"]                              # If you don't have client id then register new app: https://dev.twitch.tv/console/apps
-        self.client_secret      = config["client_secret"]                               # Manage application -> new secret
-        self.ffmpeg_path        = config["ffmpeg_path"]                    # Path to ffmpeg.exe. Leave blank if Linux or ffmpeg in env PATH
-        self.refresh            = config["refresh"] if config["refresh"] else 5                            # Time between checking (5.0 is recommended)
-        self.root_path          = config["output_path"] if config["output_path"] else "twitch"                    # path to recorded and processed streams
-        self.username           = config["username"] 
-        self.quality            = config["quality"]
-        self.timezoneName       = 'Europe/Moscow'                  # name of timezone (list of timezones: https://stackoverflow.com/questions/13866926/is-there-a-list-of-pytz-timezones)
-        self.oauth_tok_private  = ""                               # You can provide your private oauth token and record streams without ads or record sub-only streams (or leave blank if don't need), how to get oauth: https://imgur.com/a/j1Bg6JM
-        self.chatdownload       = 1                                # 0 - disable chat downloading, 1 - enable chat downloading
-        self.cmdstate           = 2                                # Windows: 0 - not minimazed cmd close after processing, 1 - minimazed cmd close after processing, 2 - minimazed cmd don't close after processing, 3 - no terminal, do in background
-                                                                   # Linux:   0 - not minimazed terminal close after processing, 1 - not minimazed terminal don't close after processing, 2 - no terminal, do in background
-        self.downloadVOD        = 0                                # 0 - disable VOD downloading after stream's ending, 1 - enable VOD downloading after stream's ending
-        self.dont_ask_to_delete = 1                                # 0 - always ask to delete previous processed streams from recorded folder, 1 - don't ask, don't delete, 2 - don't ask, delete
-        self.make_stream_folder = 1                                # 0 - don't make folders for each processed stream, 1 - make folders for each processed stream
-        self.short_folder       = 0                                # 0 - date, title, game and username in processed VOD folder, 1 - only date in processed VOD folder
-        self.hls_segments       = 3                                # 1-10 for live stream, it's possible to use multiple threads to potentially increase the throughput. 2-3 is enough
-        self.hls_segmentsVOD    = 10                               # 1-10 for downloading vod, it's possible to use multiple threads to potentially increase the throughput
-        self.streamlink_debug   = 0                                # 0 - don't show streamlink debug, 1 - show streamlink debug
-        self.warning_windows    = 1                                # 0 - don't show warning windows (warnings will only be printed in terminal), 1 - show warning windows
+        self.client_id          = sys.argv[1]                                          # If you don't have client id then register new app: https://dev.twitch.tv/console/apps
+        self.client_secret      = sys.argv[2]                                          # Manage application -> new secret
+        self.ffmpeg_path        = ""                                                   # Path to ffmpeg.exe. Leave blank if Linux or ffmpeg in env PATH
+        self.refresh            = sys.argv[5] if len(sys.argv) > 5 else 5             # Time between checking (5.0 is recommended)
+        self.root_path          = sys.argv[6] if len(sys.argv) > 6 else "twitch"      # path to recorded and processed streams
+        self.username           = sys.argv[3] 
+        self.quality            = sys.argv[4]
+        self.timezoneName       = 'Europe/Moscow'                                      # name of timezone (list of timezones: https://stackoverflow.com/questions/13866926/is-there-a-list-of-pytz-timezones)
+        self.oauth_tok_private  = ""                                                   # You can provide your private oauth token and record streams without ads or record sub-only streams (or leave blank if don't need), how to get oauth: https://imgur.com/a/j1Bg6JM
+        self.chatdownload       = 1                                                    # 0 - disable chat downloading, 1 - enable chat downloading
+        self.cmdstate           = 2                                                    # Windows: 0 - not minimazed cmd close after processing, 1 - minimazed cmd close after processing, 2 - minimazed cmd don't close after processing, 3 - no terminal, do in background
+                                                                                       # Linux:   0 - not minimazed terminal close after processing, 1 - not minimazed terminal don't close after processing, 2 - no terminal, do in background
+        self.downloadVOD        = 0                                                    # 0 - disable VOD downloading after stream's ending, 1 - enable VOD downloading after stream's ending
+        self.dont_ask_to_delete = 1                                                    # 0 - always ask to delete previous processed streams from recorded folder, 1 - don't ask, don't delete, 2 - don't ask, delete
+        self.make_stream_folder = 1                                                    # 0 - don't make folders for each processed stream, 1 - make folders for each processed stream
+        self.short_folder       = 0                                                    # 0 - date, title, game and username in processed VOD folder, 1 - only date in processed VOD folder
+        self.hls_segments       = 3                                                    # 1-10 for live stream, it's possible to use multiple threads to potentially increase the throughput. 2-3 is enough
+        self.hls_segmentsVOD    = 10                                                   # 1-10 for downloading vod, it's possible to use multiple threads to potentially increase the throughput
+        self.streamlink_debug   = 0                                                    # 0 - don't show streamlink debug, 1 - show streamlink debug
+        self.warning_windows    = 1                                                    # 0 - don't show warning windows (warnings will only be printed in terminal), 1 - show warning windows
 
 
     def validate_config(self, config):
-        if len(config["client_id"]) != 30 or len(config["client_secret"]) != 30:
+        if len(sys.argv[1]) != 30 or len(sys.argv[2]) != 30:
             raise Exception("No client id and secret provided or wrong format, length of 30 is require")
         if config["refresh"] is None:
             print('Defaulting to 5 refresh')
@@ -275,6 +275,7 @@ class TwitchRecorder:
                         recorded_filename = os.path.join(self.recorded_path, filename)
 
                 # start streamlink process
+                subprocess.call(["streamlink", '--version'])
                 subprocess.call(["streamlink", '--http-header', 'Authorization=OAuth ' + self.oauth_tok_private, "--hls-segment-threads", str(self.hls_segments), "--hls-live-restart", "--twitch-disable-hosting", "twitch.tv/" + self.username, self.quality, "--retry-streams", str(self.refresh)] + self.debug_cmd + ["-o", recorded_filename])
 
                 print("Fixing is done. Going back to checking..")

@@ -1,13 +1,11 @@
 # Auto Stream Recording Twitch
 
-Python script for auto recording streams.
-Thanks for source script to [junian](https://gist.github.com/junian/b41dd8e544bf0e3980c971b0d015f5f6)
+Docker container for auto recording streams.
+Thanks for the source script by [junian](https://gist.github.com/junian/b41dd8e544bf0e3980c971b0d015f5f6) and modifications done by [Effanuel](https://github.com/Effanuel/Auto-Stream-Recording-Twitch)
 
 # Requirements
 
-- [Python 3](https://www.python.org/downloads/)
-- [Streamlink](https://github.com/streamlink/streamlink)
-- [FFmpeg](http://ffmpeg.org/download.html)
+- [Docker](https://www.docker.com/)
 
 # How to get client_id and client_secret:
 
@@ -21,36 +19,16 @@ Thanks for source script to [junian](https://gist.github.com/junian/b41dd8e544bf
 8. Find the registered application in the list and press "Manage"
 9. You will see `Client ID`, which is `client_id`
 10. Press on "New Secret", this will generate `client_secret`
-11. You are done
 
 # Installing
 
-1. Install Python 3
-2. Streamlink
-3. Download ffmpeg
-4. Download script
-5. Change config options:
-
-- client_id - Get this from previous section guide
-- client_secret - Get this from previous section guide
-- ffmpeg_path - directory of ffmpeg if on Windows and ffmpeg.exe is not in path
-- output_path - where to output recorded streams
-- refresh - how often to check if stream is online in seconds
-- username - name of twitch channel (ex. forsen)
-- quality - single quality or separated by comma (ex. "720p,720p60,best")
-
-Example config file content:
-```json
-{
-   "client_id": "h9wqpoxrb3cxaxmxas0ee4olvzuo0p",
-   "client_secret": "8rc0xfpgerer0set41ffxzd9799cpa",
-   "ffmpeg_path": "",
-   "output_path": "twitch",
-   "refresh": 5,
-   "username": "forsen",
-   "quality": "720p,720p60,best"
-}
-```
-
-6. Do: `pip install -r requirements.txt`
-7. Do: `python Auto_Recording_Twitch.py`
+1. Install Docker
+2. Download this repository
+3. Run `docker build . -t streamrec`
+4. Run and replace the variables surrounded by `[SQUARE_BRAKETS]` inside this command:
+5. `docker run -v [ABSOLUTE_TARGET_PATH]:/app/twitch test python3 record.py [CLIENT_ID] [CLIENT_SECRET] [CHANNEL_NAME] [QUALITY]`
+   1. `ABSOLUTE TARGET PATH`: Path to where the recordings will be stored
+   2. `CLIENT_ID`: The obtained client id from twitch
+   3. `CLIENT_SECRET`: The obtained client secret from twitch
+   4. `CHANNEL_NAME`: Name of the twitch channel to record
+   5. `QUALITY`: Explicit quality setting to use as seen in the twitch player or `best` or `worse`
