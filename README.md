@@ -20,13 +20,21 @@ Thanks for the source script by [junian](https://gist.github.com/junian/b41dd8e5
 9. You will see `Client ID`, which is `client_id`
 10. Press on "New Secret", this will generate `client_secret`
 
-# Installing
+# Running
 
-1. Install Docker
-2. Download this repository
-3. Run `docker build . -t streamrec`
-4. Run and replace the variables surrounded by `[SQUARE_BRAKETS]` inside this command:
-5. `docker run -v [ABSOLUTE_TARGET_PATH]:/app/twitch test python3 record.py [CLIENT_ID] [CLIENT_SECRET] [CHANNEL_NAME] [QUALITY]`
+1. Run `docker run -v [ABSOLUTE_TARGET_PATH]:/app/twitch ghcr.io/vimaster/auto-stream-recording-twitch:main python3 record.py [CLIENT_ID] [CLIENT_SECRET] [CHANNEL_NAME] [QUALITY]`
+   1. `ABSOLUTE TARGET PATH`: Path to where the recordings will be stored
+   2. `CLIENT_ID`: The obtained client id from twitch
+   3. `CLIENT_SECRET`: The obtained client secret from twitch
+   4. `CHANNEL_NAME`: Name of the twitch channel to record
+   5. `QUALITY`: Explicit quality setting to use as seen in the twitch player or `best` or `worse`
+
+# Building locally
+
+1. Download this repository
+2. Run `docker build https://github.com/docker/rootfs.git#container:docker -t streamrec`
+3. Run and replace the variables surrounded by `[SQUARE_BRAKETS]` inside this command:
+4. `docker run -v [ABSOLUTE_TARGET_PATH]:/app/twitch test python3 record.py [CLIENT_ID] [CLIENT_SECRET] [CHANNEL_NAME] [QUALITY]`
    1. `ABSOLUTE TARGET PATH`: Path to where the recordings will be stored
    2. `CLIENT_ID`: The obtained client id from twitch
    3. `CLIENT_SECRET`: The obtained client secret from twitch
